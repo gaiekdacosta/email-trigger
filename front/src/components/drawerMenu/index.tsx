@@ -46,7 +46,7 @@ const DrowerMenu = () => {
                             </Flex>
                         </Flex>
                         <Flex mt='28%' justifyContent='center' alignItems='center' flexDirection='column' fontSize='80px'>
-                            <Link href="https://github.com/gaiekdacosta">
+                            <Link href="https://github.com/gaiekdacosta/email-trigger">
                                 <SiGithub />
                             </Link>
                             <Text mt='1%' fontSize='md'>repositório do projeto</Text>
