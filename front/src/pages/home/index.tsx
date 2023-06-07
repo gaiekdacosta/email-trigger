@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Box, Button, Flex, FormLabel, Input, Text, useColorMode, useToast } from "@chakra-ui/react";
 import { MdMessage } from 'react-icons/md';
 
@@ -18,7 +18,7 @@ import Sorry from '../../components/messages/sorry';
 import api from '../../services';
 
 const Home = () => {
-    const [indexMessage, setMessageIndex] = useState<number>(0)
+    const [id, setId] = useState<number>(0)
     const [addressee, setAddressee] = useState<string>('')
 
     const toast = useToast()
@@ -42,6 +42,12 @@ const Home = () => {
 
     const handleAdressees = (e: any) => setAddressee(e)
 
+    const getMessages = async () => {
+        await api.get(`/showMessages/:id`).then((res) => {
+            console.log(res.data)
+        })
+    }
+
     const sendMessage = () => {
         toast({
             title: 'A mensagem está sendo enviada.',
@@ -51,7 +57,7 @@ const Home = () => {
             position: 'bottom-right',
             variant: 'top-accent'
         })
-        api.post(`/sendMail/${indexMessage}/${addressee}`)
+        api.post(`/sendMail/${id}/${addressee}`)
             .then(res => {
                 console.log(res)
                 toast({
@@ -63,7 +69,7 @@ const Home = () => {
                     variant: 'top-accent',
                 })
                 setAddressee('');
-                setMessageIndex(0);
+                setId(0);
             })
         .catch(res => {
             toast({
@@ -77,6 +83,10 @@ const Home = () => {
         });
     };
 
+    useEffect(() => {
+        getMessages()
+    }, [id])
+
     return (
         <>
             <Header />
@@ -85,13 +95,13 @@ const Home = () => {
                 <MdMessage />
             </Flex>
             <Flex alignItems='center' mt='0.5%' flexDirection='column'>
-                {components[indexMessage]}
+                {components[id]}
                 <Box position="fixed" top='69%' right='30%' textAlign='center'>
                     <Flex flexDirection='column'>
                         <ChangeMessage
                             components={components}
-                            indexMessage={indexMessage}
-                            setMessageIndex={setMessageIndex} />
+                            id={id}
+                            setId={setId} />
                             <FormLabel>email do destinatário</FormLabel>
                             <Input
                                 bg={colorMode === "light" ? "whitesmoke" : "blackAlpha.100"}

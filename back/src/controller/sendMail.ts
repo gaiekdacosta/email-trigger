@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const sendMail = async (indexMessage: number, addressee: string) => {
-    console.log(indexMessage, addressee);
+const sendMail = async (id: number, addressee: string) => {
+    console.log(id, addressee);
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',

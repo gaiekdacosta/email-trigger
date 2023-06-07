@@ -3,20 +3,20 @@ import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 
 interface changeMessageProps {
     components: JSX.Element[],
-    setMessageIndex: React.Dispatch<React.SetStateAction<number>>,
-    indexMessage: number
+    setId: React.Dispatch<React.SetStateAction<number>>,
+    id: number
 }
 
-const ChangeMessage: React.FC<changeMessageProps> = ({ components, setMessageIndex, indexMessage }) => {
+const ChangeMessage: React.FC<changeMessageProps> = ({ components, setId, id }) => {
     const handleNextMessage = () => {
-        setMessageIndex((prevIndex) => (prevIndex < components.length - 1 ? prevIndex + 1 : prevIndex));
+        setId((prevIndex) => (prevIndex < components.length - 1 ? prevIndex + 1 : prevIndex));
     };
 
     const handlePreviousMessage = () => {
-        setMessageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
+        setId((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
     };
 
-    const countMessage = `${indexMessage + 1} / ${components.length}`
+    const countMessage = `${id + 1} / ${components.length}`
 
     return (
         <>

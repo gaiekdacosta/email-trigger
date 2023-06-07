@@ -1,23 +1,42 @@
 import express, { Request, Response } from 'express'
 import sendMail from '../controller/sendMail';
+import showMessages from '../controller/showMessages';
 
 const routes = express.Router()
 
 interface emailData {
-    indexMessage: number,
+    id: number,
     addressee: string,
 }
 
-    routes.post('/sendMail/:indexMessage/:addressee', (req: Request, res: Response) => {
+    routes.get('/showMessages/:id', (req: Request, res: Response) => {
         try {
-            const { indexMessage, addressee } = req.params;
+            const { id } = req.params;
+
+
+            const email = showMessages(Number(id));
+
+            if (email) {
+                res.json(email);
+            } else {
+                res.status(404).json({ error: 'E-mail não encontrado' });
+            }
+        } catch (error) {
+            console.error('Erro ao obter o e-mail:', error);
+            res.status(500).json({ error: 'Erro ao obter o e-mail' });
+        }
+    });
+
+    routes.post('/sendMail/:id/:addressee', (req: Request, res: Response) => {
+        try {
+            const { id, addressee } = req.params;
 
             const emailData: emailData = {
-                indexMessage: Number(indexMessage),
+                id: Number(id),
                 addressee: addressee,
             };
 
-            sendMail(emailData.indexMessage, emailData.addressee);
+            sendMail(emailData.id, emailData.addressee);
 
             res.json({ message: 'Verifique a caixa de entrada!' });
         } catch (error) {
