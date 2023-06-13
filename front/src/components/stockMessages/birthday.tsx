@@ -30,7 +30,6 @@ const Birthday = () => {
                     Que a sua jornada seja abençoada com infinitas bênçãos e felicidade duradoura.
                 </Text>
             </Box>
-
         </>
     )
 }

@@ -2,21 +2,21 @@ import { Button, Center, Text } from "@chakra-ui/react";
 import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 
 interface changeMessageProps {
-    components: JSX.Element[],
+    messages: string[],
     setId: React.Dispatch<React.SetStateAction<number>>,
     id: number
 }
 
-const ChangeMessage: React.FC<changeMessageProps> = ({ components, setId, id }) => {
+const ChangeMessage: React.FC<changeMessageProps> = ({ messages, setId, id }) => {
     const handleNextMessage = () => {
-        setId((prevIndex) => (prevIndex < components.length - 1 ? prevIndex + 1 : prevIndex));
+        setId((prevIndex) => (prevIndex < messages.length - 1 ? prevIndex + 1 : prevIndex));
     };
 
     const handlePreviousMessage = () => {
         setId((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
     };
 
-    const countMessage = `${id + 1} / ${components.length}`
+    const countMessage = `${id + 1} / ${messages.length}`
 
     return (
         <>

@@ -13,11 +13,10 @@ interface emailData {
         try {
             const { id } = req.params;
 
-
             const email = showMessages(Number(id));
 
             if (email) {
-                res.json(email);
+                res.json([email]);
             } else {
                 res.status(404).json({ error: 'E-mail não encontrado' });
             }
@@ -27,7 +26,7 @@ interface emailData {
         }
     });
 
-    routes.post('/sendMail/:id/:addressee', (req: Request, res: Response) => {
+    routes.post('/sendMail/:id/:addressee', async (req: Request, res: Response) => {
         try {
             const { id, addressee } = req.params;
 
@@ -41,7 +40,7 @@ interface emailData {
             res.json({ message: 'Verifique a caixa de entrada!' });
         } catch (error) {
             console.error('Erro ao enviar o email:', error);
-            res.status(500).json({ error: 'Erro ao enviar o email' });
+            res.status(500).json({ error: 'Erro ao enviar o email' + error });
         }
     });
 export default routes;

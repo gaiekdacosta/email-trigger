@@ -1,62 +1,30 @@
 import { useEffect, useState } from 'react'
 import { Box, Button, Flex, FormLabel, Input, Text, useColorMode, useToast } from "@chakra-ui/react";
 import { MdMessage } from 'react-icons/md';
-
-// messages 
-import Birthday from '../../components/messages/birthday';
-import DeadLine from '../../components/messages/deadline';
-import FeedBack from '../../components/messages/feedback';
-import Confirmation from '../../components/messages/confirmation';
-import Resignation from '../../components/messages/resignation';
-import VacationRequest from '../../components/messages/vacationRequest';
-import ChangeMessage from '../../components/changeMessage/changeMessage';
-import Header from '../../components/header';
-import Cancellation from '../../components/messages/cancellation';
-import ConfirmReceipt from '../../components/messages/ConfirmReceipt';
-import Salutation from '../../components/messages/salutation';
-import Sorry from '../../components/messages/sorry';
 import api from '../../services';
+import Header from '../../components/header';
+import Messages from '../../components/messages';
+import ChangeMessage from '../../components/changeMessage/changeMessage';
 
 const Home = () => {
+    const [messages, setMessages] = useState<string[]>([])
     const [id, setId] = useState<number>(0)
     const [addressee, setAddressee] = useState<string>('')
 
     const toast = useToast()
 
     const { colorMode } = useColorMode()
-
-    const components = [
-        <Birthday />,
-        <DeadLine />,
-        <FeedBack />,
-        <Resignation />,
-        <VacationRequest />,
-        <Confirmation />,
-        <Cancellation />,
-        <ConfirmReceipt />,
-        <Salutation />,
-        <Sorry />
-    ]
-
-    console.log(components)
-
+    
     const handleAdressees = (e: any) => setAddressee(e)
 
     const getMessages = async () => {
-        await api.get(`/showMessages/:id`).then((res) => {
+        await api.get(`/showMessages/${id}`).then((res) => {
             console.log(res.data)
+            setMessages(res.data)
         })
     }
 
     const sendMessage = () => {
-        toast({
-            title: 'A mensagem está sendo enviada.',
-            description: 'Aguarde alguns instantes',
-            status: 'loading',
-            isClosable: true,
-            position: 'bottom-right',
-            variant: 'top-accent'
-        })
         api.post(`/sendMail/${id}/${addressee}`)
             .then(res => {
                 console.log(res)
@@ -95,11 +63,11 @@ const Home = () => {
                 <MdMessage />
             </Flex>
             <Flex alignItems='center' mt='0.5%' flexDirection='column'>
-                {components[id]}
+                <Messages messages={messages} />
                 <Box position="fixed" top='69%' right='30%' textAlign='center'>
                     <Flex flexDirection='column'>
                         <ChangeMessage
-                            components={components}
+                            messages={messages}
                             id={id}
                             setId={setId} />
                             <FormLabel>email do destinatário</FormLabel>

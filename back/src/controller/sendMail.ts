@@ -4,13 +4,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const sendMail = async (id: number, addressee: string) => {
-    console.log(id, addressee);
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'pelipe.gaiek1701@gmail.com',
-            pass: 'isrwqrrtbdceozny',
+            user: 'emailtriggerproject@gmail.com',
+            pass: 'Gaiek@1234',
         },
     });
 
@@ -54,7 +53,7 @@ const sendMail = async (id: number, addressee: string) => {
                     <header>
                         <p>📨 Disparador de emails</p>
                     </header>
-                        <p>test</p>
+                        <p>teste<p>
                     <footer>
                         <p>Developed by gaiek da costa</p>
                     </footer>
@@ -65,9 +64,17 @@ const sendMail = async (id: number, addressee: string) => {
     try {
         await transporter.sendMail(mailOptions);
         console.log('E-mail enviado com sucesso!');
-    } catch (error) {
-        console.error('Erro ao enviar o email:', error);
-        throw error;
+    } catch (error: any) {
+        if (error.code === "EAUTH") {
+            console.error('Erro de autenticação ao enviar o email:', error);
+            throw new Error('Erro de autenticação ao enviar o email');
+        } else if (error.code === "ECONNECTION") {
+            console.error('Erro de conexão ao enviar o email:', error);
+            throw new Error('Erro de conexão ao enviar o email');
+        } else {
+            console.error('Erro ao enviar o email:', error);
+            throw new Error('Erro ao enviar o email');
+        }
     }
 };
 
